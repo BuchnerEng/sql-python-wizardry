@@ -1,0 +1,22 @@
+function onOpen(e) {
+  let ui = SpreadsheetApp.getUi(); 
+  ui.createMenu('🤖 Backup')
+    .addItem('Create new backup with date', 'copySheetValues')
+    .addToUi(); 
+}; 
+
+function copySheetValues()
+{
+  var source = SpreadsheetApp.getActiveSheet();
+  var sourcename = source.getSheetName();
+  var sourceDataRange = source.getDataRange();
+  var sourceSheetValues = sourceDataRange.getValues();
+  var sourceRows = sourceDataRange.getNumRows();
+  var sourceColumns = sourceDataRange.getNumColumns();
+  var date = Utilities.formatDate(new Date(), "GMT+3", "yyyy-MM-dd")
+  
+  var destination = SpreadsheetApp.openById('SHEET TOKEN AQUI');
+  destination.insertSheet(date.toString(), 0);
+  destination.getDataRange().offset(0, 0, sourceRows, sourceColumns).setValues(sourceSheetValues);
+
+}
